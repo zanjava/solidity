@@ -65,9 +65,9 @@ contract Ballot {
     }
 
     // 登记选民
-    function register(address voter) public validPhase(Phase.Regs) {
+    function register(address voter) public validPhase(Phase.Regs) onlyChair {
         // chairPerson才有登记权。如果已投过票了则直接返回（否则会把他标记为未投票状态）
-        if (msg.sender != chairPerson || voters[voter].voted) {
+        if (voters[voter].voted) {
             revert(); //回退
         }
         voters[voter].weight = 1; // 普通选民权重为1
